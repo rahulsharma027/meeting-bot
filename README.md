@@ -27,7 +27,9 @@ flowchart LR
     Audio --> Playback[Timestamped playback]
 ```
 
-The [architecture document](docs/ARCHITECTURE.md) defines component responsibilities, data flow, interfaces, and failure handling. The [requirements](docs/REQUIREMENTS.md) distinguish current scope from future extensions. Implementation will proceed through the component-level [roadmap](docs/BUILD_PLAN.md).
+The [architecture review](docs/ARCHITECTURE_REVIEW.md) records the inspected prototype and gaps. The [architecture document](docs/ARCHITECTURE.md) defines component responsibilities, data flow and failure handling; [contracts](docs/CONTRACTS.md) define revision-safe evidence and publication semantics. The [requirements](docs/REQUIREMENTS.md) distinguish confirmed constraints from open decisions. Implementation will proceed through the component-level [roadmap](docs/BUILD_PLAN.md), starting with durable recording import and recovery after architecture review.
+
+The proposed system processes locally by default, with explicit opt-in for cloud operations. The reference prototype currently offers optional cloud-backed embeddings/generation; local speech/generation runtimes and the full processing-policy boundary are not yet implemented.
 
 ## Reference prototype
 
@@ -104,9 +106,12 @@ See [verification results and limitations](docs/VERIFICATION.md). The current im
 ## Documentation
 
 - [Requirements](docs/REQUIREMENTS.md)
+- [Architecture review and repository evidence](docs/ARCHITECTURE_REVIEW.md)
 - [Architecture](docs/ARCHITECTURE.md)
+- [Component data and lifecycle contracts](docs/CONTRACTS.md)
 - [Component roadmap](docs/BUILD_PLAN.md)
 - [Reference implementation](docs/PROTOTYPE.md)
 - [Verification](docs/VERIFICATION.md)
 - [Architecture decision record](docs/decisions/0001-independent-project.md)
+- [Proposed local processing and provenance decision](docs/decisions/0002-local-processing-and-provenance.md)
 - [AI assistance disclosure](docs/AI_USE.md)

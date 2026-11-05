@@ -40,3 +40,11 @@ The exploratory TF-IDF results in `evaluation/tfidf-baseline.json` use a differe
 - Audio capture, ASR, diarization, shared-user authorization, and Google Meet bot joining are planned capabilities, not verified features.
 
 Mocked responses test provider contracts and orchestration only. `evaluate.py --live` performs actual embedding calls for retrieval evaluation; generated-answer quality requires a separate source-support review.
+
+## Architecture-review rerun: 2026-11-05
+
+- Existing environment: Python 3.15.1 / Django 5.2.18 (the same experimental Python compatibility caveat applies).
+- `manage.py check`: no issues.
+- `python -m unittest discover -v`: all 24 existing tests passed.
+- `python evaluate.py --output .local/architecture-review-bm25.json`: reproduced recall 0.9306, precision 0.4306, MRR 0.9583 and hit rate 1.0000. The rerun report is an ignored local artifact; the tracked baseline is unchanged.
+- No live provider calls, model downloads, audio processing, UI layout checks or Google Meet integration were run in this review. Proposed architecture/contracts/ADR/roadmap describe future acceptance gates, not new verified features.
