@@ -1,0 +1,163 @@
+{
+  "executed_at": "2026-11-04T06:06:14.492021+00:00",
+  "label_level": "document",
+  "dataset": "12 synthetic development queries, not a held-out benchmark",
+  "live_models_used": false,
+  "generation_evaluated": false,
+  "modes": {
+    "keyword": {
+      "chunk_budget": 4,
+      "metric_note": "Deduplicate documents after retrieving 4 chunks; precision uses returned distinct-document count, not fixed document k.",
+      "document_recall": 0.9305555555555555,
+      "document_precision": 0.4305555555555555,
+      "mrr": 0.9583333333333334,
+      "hit_rate": 1.0,
+      "queries": [
+        {
+          "id": "q01",
+          "retrieved_documents": [
+            "01-rag-lecture",
+            "02-retrieval-evaluation",
+            "03-project-kickoff"
+          ],
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "reciprocal_rank": 1.0,
+          "hit": true
+        },
+        {
+          "id": "q02",
+          "retrieved_documents": [
+            "03-project-kickoff",
+            "01-rag-lecture",
+            "04-sprint-review",
+            "05-database-lecture"
+          ],
+          "recall": 1.0,
+          "precision": 0.25,
+          "reciprocal_rank": 0.5,
+          "hit": true
+        },
+        {
+          "id": "q03",
+          "retrieved_documents": [
+            "02-retrieval-evaluation",
+            "01-rag-lecture"
+          ],
+          "recall": 1.0,
+          "precision": 0.5,
+          "reciprocal_rank": 1.0,
+          "hit": true
+        },
+        {
+          "id": "q04",
+          "retrieved_documents": [
+            "02-retrieval-evaluation",
+            "03-project-kickoff",
+            "01-rag-lecture"
+          ],
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "reciprocal_rank": 1.0,
+          "hit": true
+        },
+        {
+          "id": "q05",
+          "retrieved_documents": [
+            "04-sprint-review",
+            "06-design-review",
+            "03-project-kickoff"
+          ],
+          "recall": 1.0,
+          "precision": 0.6666666666666666,
+          "reciprocal_rank": 1.0,
+          "hit": true
+        },
+        {
+          "id": "q06",
+          "retrieved_documents": [
+            "03-project-kickoff",
+            "02-retrieval-evaluation",
+            "01-rag-lecture"
+          ],
+          "recall": 0.5,
+          "precision": 0.3333333333333333,
+          "reciprocal_rank": 1.0,
+          "hit": true
+        },
+        {
+          "id": "q07",
+          "retrieved_documents": [
+            "04-sprint-review",
+            "03-project-kickoff",
+            "06-design-review"
+          ],
+          "recall": 1.0,
+          "precision": 0.6666666666666666,
+          "reciprocal_rank": 1.0,
+          "hit": true
+        },
+        {
+          "id": "q08",
+          "retrieved_documents": [
+            "04-sprint-review",
+            "06-design-review",
+            "03-project-kickoff"
+          ],
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "reciprocal_rank": 1.0,
+          "hit": true
+        },
+        {
+          "id": "q09",
+          "retrieved_documents": [
+            "06-design-review",
+            "03-project-kickoff",
+            "02-retrieval-evaluation",
+            "01-rag-lecture"
+          ],
+          "recall": 1.0,
+          "precision": 0.25,
+          "reciprocal_rank": 1.0,
+          "hit": true
+        },
+        {
+          "id": "q10",
+          "retrieved_documents": [
+            "05-database-lecture",
+            "01-rag-lecture",
+            "06-design-review"
+          ],
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "reciprocal_rank": 1.0,
+          "hit": true
+        },
+        {
+          "id": "q11",
+          "retrieved_documents": [
+            "05-database-lecture",
+            "06-design-review"
+          ],
+          "recall": 1.0,
+          "precision": 0.5,
+          "reciprocal_rank": 1.0,
+          "hit": true
+        },
+        {
+          "id": "q12",
+          "retrieved_documents": [
+            "01-rag-lecture",
+            "02-retrieval-evaluation",
+            "03-project-kickoff"
+          ],
+          "recall": 0.6666666666666666,
+          "precision": 0.6666666666666666,
+          "reciprocal_rank": 1.0,
+          "hit": true
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,14 @@
+[
+  {"id":"q01","query":"What is an embedding and how does cosine similarity work?"},
+  {"id":"q02","query":"How do BM25 keyword and semantic retrieval complement each other?"},
+  {"id":"q03","query":"What do precision recall and mean reciprocal rank measure?"},
+  {"id":"q04","query":"Is a retrieval score a calibrated probability that an answer is correct?"},
+  {"id":"q05","query":"Who committed to implementing the transcript parser and what is the revised deadline?"},
+  {"id":"q06","query":"Who will prepare twelve labelled retrieval questions and by when?"},
+  {"id":"q07","query":"Did the team choose an audio transcription provider for the first release?"},
+  {"id":"q08","query":"What should notes do when an action item has no explicit owner or due date?"},
+  {"id":"q09","query":"How should the interface show sources on desktop and phone?"},
+  {"id":"q10","query":"Does an audit timeline make database records tamper-proof?"},
+  {"id":"q11","query":"What happens if a submitted form has a stale stored version?"},
+  {"id":"q12","query":"Why must the evaluation questions stay separate from the searchable corpus?"}
+]

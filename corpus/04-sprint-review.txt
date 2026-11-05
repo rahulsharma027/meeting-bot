@@ -1,0 +1,11 @@
+Title: Transcript assistant — sprint review
+Kind: meeting
+Date: 2026-11-02
+
+[00:00:00] Mira: This is a fictional sprint review. The earlier kickoff named 2026-11-07 as the parser deadline. We are changing that commitment today.
+[00:01:05] Rahul: I still own the transcript parser. Its revised due date is 2026-11-09 because SRT multiline cues need an extra validation pass. The 2026-11-07 commitment is superseded, not a second active deadline.
+[00:02:25] Leena: I will finish the retrieval question set by 2026-11-08, unchanged from kickoff. We must keep the expected answers outside the ingestion directory.
+[00:03:30] Mira: We decided to keep audio transcription out of the first release. We have not chosen Whisper or any other transcription provider. Do not describe speech recognition as implemented.
+[00:04:45] Rahul: API quotas can interrupt a demo. The app should show a clear provider error. A search-only mode can still inspect passages when no key is configured, but must never show a canned answer as though a model generated it.
+[00:06:00] Leena: Meeting notes should distinguish decisions from proposals. Extract an owner only when the transcript explicitly assigns responsibility. If a due date is missing, store null or show Not stated; never invent next Friday.
+[00:07:15] Mira: We discussed an end-of-month public launch, but made no launch commitment. There is no confirmed public release date.

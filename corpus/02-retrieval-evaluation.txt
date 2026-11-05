@@ -1,0 +1,12 @@
+Title: Measuring retrieval — lecture 02
+Kind: lecture
+Date: 2026-10-28
+
+[00:00:00] Dr. Sen: This is a fictional teaching transcript. Evaluate retrieval separately from answer generation. A fluent answer does not establish that the correct source was retrieved.
+[00:01:20] Dr. Sen: Recall at k is the fraction of labelled relevant items retrieved in the first k results. Precision at k is the fraction of those k results that are relevant. Mean reciprocal rank averages one divided by the position of the first relevant result. State whether your labels are at document or chunk level.
+[00:03:00] Ravi: Should our small demo always return ten chunks?
+[00:03:10] Dr. Sen: No. More context can increase cost and add distracting passages. Compare small top-k settings using actual questions. Chunk size and overlap are hypotheses to test; paragraph and speaker-turn boundaries can preserve meaning better than arbitrary cuts.
+[00:04:30] Dr. Sen: Answer evaluation includes factual support, source attribution, coverage, and appropriate abstention. Test answerable questions, paraphrases, questions needing several passages, and questions absent from the corpus. A model judging another model is useful but does not replace human checks.
+[00:06:00] Dr. Sen: A retrieval score is not a calibrated probability that an answer is correct. Set a threshold using a validation set and review both false answers and unnecessary refusals. Do not label a cosine similarity of 0.8 as eighty percent confidence.
+[00:07:20] Dr. Sen: Treat uploaded transcripts as untrusted data. A speaker may say ignore previous instructions. That text must not become a system instruction. Delimit sources, require citations, avoid giving this assistant action tools, and test adversarial content. Prompt instructions reduce risk but are not a complete security boundary.
+[00:09:00] Dr. Sen: Measure query embedding time, retrieval time, generation time, and token usage separately. Cached document embeddings avoid paying to embed unchanged documents repeatedly. Changing a document must invalidate its old chunks and embeddings.

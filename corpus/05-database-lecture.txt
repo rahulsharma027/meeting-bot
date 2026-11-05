@@ -1,0 +1,11 @@
+Title: Databases and transactions — lecture 03
+Kind: lecture
+Date: 2026-10-30
+
+[00:00:00] Dr. Iyer: This is a fictional lecture. A transaction groups changes so they commit together or roll back together. An audit event and its corresponding case mutation should not disagree because one write succeeded and the other failed.
+[00:01:40] Dr. Iyer: A primary key identifies one row. A foreign key references a row in another table. Indexes can improve lookup performance, but consume storage and add write work. They do not make every possible query fast.
+[00:03:10] Dr. Iyer: SQLite is convenient for a local demo because there is no separate database service to install. Concurrent write throughput is limited. PostgreSQL may be appropriate when multiple users and operational requirements justify it.
+[00:04:50] Asha: Does storing an audit timeline make it tamper-proof?
+[00:05:00] Dr. Iyer: No. An administrator with database write access can alter application-managed records. Describe that limitation accurately instead of claiming cryptographic immutability.
+[00:06:25] Dr. Iyer: A version check can detect a stale form. If the stored version differs from the form's expected version, reject the mutation and ask the user to reload rather than silently overwriting another person's change.
+[00:08:00] Dr. Iyer: Database migrations record schema changes. A database backup is different from a migration. Back up user-created data; a repeatable synthetic-data generator only recreates the generated baseline.

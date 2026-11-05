@@ -1,0 +1,653 @@
+{
+  "aggregate_metrics": {
+    "mean_precision@1": 0.25,
+    "mean_recall@1": 0.1111111111111111,
+    "mean_ndcg@1": 0.25,
+    "mean_precision@3": 0.2222222222222222,
+    "mean_recall@3": 0.4305555555555556,
+    "mean_ndcg@3": 0.3289995862809209,
+    "mean_precision@5": 0.2708333333333333,
+    "mean_recall@5": 0.9166666666666666,
+    "mean_ndcg@5": 0.5463999938535038,
+    "mean_reciprocal_rank": 0.46388888888888885
+  },
+  "query_results": [
+    {
+      "query_id": "q01",
+      "query": "What is an embedding and how does cosine similarity work?",
+      "relevant_count": 1,
+      "retrieved_count": 5,
+      "metrics": {
+        "precision@1": 0.0,
+        "recall@1": 0.0,
+        "precision@3": 0.3333333333333333,
+        "recall@3": 1.0,
+        "precision@5": 0.2,
+        "recall@5": 1.0,
+        "reciprocal_rank": 0.5,
+        "ndcg@1": 0.0,
+        "ndcg@3": 0.6309297535714575,
+        "ndcg@5": 0.6309297535714575
+      },
+      "retrieved_docs": [
+        [
+          "04-sprint-review",
+          1.0
+        ],
+        [
+          "01-rag-lecture",
+          0.8304108811845493
+        ],
+        [
+          "03-project-kickoff",
+          0.8119646767679701
+        ],
+        [
+          "05-database-lecture",
+          0.7931373217844453
+        ],
+        [
+          "06-design-review",
+          0.78784670635962
+        ]
+      ],
+      "relevant_docs": [
+        "01-rag-lecture"
+      ]
+    },
+    {
+      "query_id": "q02",
+      "query": "How do BM25 keyword and semantic retrieval complement each other?",
+      "relevant_count": 1,
+      "retrieved_count": 5,
+      "metrics": {
+        "precision@1": 0.0,
+        "recall@1": 0.0,
+        "precision@3": 0.0,
+        "recall@3": 0.0,
+        "precision@5": 0.2,
+        "recall@5": 1.0,
+        "reciprocal_rank": 0.25,
+        "ndcg@1": 0.0,
+        "ndcg@3": 0.0,
+        "ndcg@5": 0.43067655807339306
+      },
+      "retrieved_docs": [
+        [
+          "06-design-review",
+          1.0
+        ],
+        [
+          "04-sprint-review",
+          0.9999999999999997
+        ],
+        [
+          "03-project-kickoff",
+          0.9505411402011755
+        ],
+        [
+          "01-rag-lecture",
+          0.8637939105781546
+        ],
+        [
+          "05-database-lecture",
+          0.8270750899947252
+        ]
+      ],
+      "relevant_docs": [
+        "01-rag-lecture"
+      ]
+    },
+    {
+      "query_id": "q03",
+      "query": "What do precision recall and mean reciprocal rank measure?",
+      "relevant_count": 1,
+      "retrieved_count": 5,
+      "metrics": {
+        "precision@1": 0.0,
+        "recall@1": 0.0,
+        "precision@3": 0.3333333333333333,
+        "recall@3": 1.0,
+        "precision@5": 0.2,
+        "recall@5": 1.0,
+        "reciprocal_rank": 0.3333333333333333,
+        "ndcg@1": 0.0,
+        "ndcg@3": 0.5,
+        "ndcg@5": 0.5
+      },
+      "retrieved_docs": [
+        [
+          "04-sprint-review",
+          1.0
+        ],
+        [
+          "06-design-review",
+          1.0
+        ],
+        [
+          "02-retrieval-evaluation",
+          0.9162743673263326
+        ],
+        [
+          "03-project-kickoff",
+          0.8020540921934156
+        ],
+        [
+          "01-rag-lecture",
+          0.7691849898266641
+        ]
+      ],
+      "relevant_docs": [
+        "02-retrieval-evaluation"
+      ]
+    },
+    {
+      "query_id": "q04",
+      "query": "Is a retrieval score a calibrated probability that an answer is correct?",
+      "relevant_count": 1,
+      "retrieved_count": 5,
+      "metrics": {
+        "precision@1": 0.0,
+        "recall@1": 0.0,
+        "precision@3": 0.0,
+        "recall@3": 0.0,
+        "precision@5": 0.2,
+        "recall@5": 1.0,
+        "reciprocal_rank": 0.2,
+        "ndcg@1": 0.0,
+        "ndcg@3": 0.0,
+        "ndcg@5": 0.38685280723454163
+      },
+      "retrieved_docs": [
+        [
+          "05-database-lecture",
+          1.0
+        ],
+        [
+          "06-design-review",
+          1.0
+        ],
+        [
+          "01-rag-lecture",
+          0.9680835420100725
+        ],
+        [
+          "03-project-kickoff",
+          0.9541274022214765
+        ],
+        [
+          "02-retrieval-evaluation",
+          0.921269826393719
+        ]
+      ],
+      "relevant_docs": [
+        "02-retrieval-evaluation"
+      ]
+    },
+    {
+      "query_id": "q05",
+      "query": "Who committed to implementing the transcript parser and what is the revised deadline?",
+      "relevant_count": 2,
+      "retrieved_count": 5,
+      "metrics": {
+        "precision@1": 1.0,
+        "recall@1": 0.5,
+        "precision@3": 0.3333333333333333,
+        "recall@3": 0.5,
+        "precision@5": 0.4,
+        "recall@5": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg@1": 1.0,
+        "ndcg@3": 0.6131471927654584,
+        "ndcg@5": 0.8772153153380493
+      },
+      "retrieved_docs": [
+        [
+          "04-sprint-review",
+          0.942838119292021
+        ],
+        [
+          "05-database-lecture",
+          0.8944271909999157
+        ],
+        [
+          "06-design-review",
+          0.8325664567468904
+        ],
+        [
+          "03-project-kickoff",
+          0.8263651392429784
+        ],
+        [
+          "02-retrieval-evaluation",
+          0.7324670207647144
+        ]
+      ],
+      "relevant_docs": [
+        "04-sprint-review",
+        "03-project-kickoff"
+      ]
+    },
+    {
+      "query_id": "q06",
+      "query": "Who will prepare twelve labelled retrieval questions and by when?",
+      "relevant_count": 2,
+      "retrieved_count": 5,
+      "metrics": {
+        "precision@1": 1.0,
+        "recall@1": 0.5,
+        "precision@3": 0.3333333333333333,
+        "recall@3": 0.5,
+        "precision@5": 0.4,
+        "recall@5": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg@1": 1.0,
+        "ndcg@3": 0.6131471927654584,
+        "ndcg@5": 0.8772153153380493
+      },
+      "retrieved_docs": [
+        [
+          "04-sprint-review",
+          0.9829101801121781
+        ],
+        [
+          "06-design-review",
+          0.9144313819501872
+        ],
+        [
+          "05-database-lecture",
+          0.8137334712067351
+        ],
+        [
+          "03-project-kickoff",
+          0.7731708189757431
+        ],
+        [
+          "02-retrieval-evaluation",
+          0.7721690015943938
+        ]
+      ],
+      "relevant_docs": [
+        "04-sprint-review",
+        "03-project-kickoff"
+      ]
+    },
+    {
+      "query_id": "q07",
+      "query": "Did the team choose an audio transcription provider for the first release?",
+      "relevant_count": 2,
+      "retrieved_count": 5,
+      "metrics": {
+        "precision@1": 0.0,
+        "recall@1": 0.0,
+        "precision@3": 0.3333333333333333,
+        "recall@3": 0.5,
+        "precision@5": 0.4,
+        "recall@5": 1.0,
+        "reciprocal_rank": 0.5,
+        "ndcg@1": 0.0,
+        "ndcg@3": 0.38685280723454163,
+        "ndcg@5": 0.6509209298071326
+      },
+      "retrieved_docs": [
+        [
+          "02-retrieval-evaluation",
+          0.9797837554810768
+        ],
+        [
+          "04-sprint-review",
+          0.9768355160762221
+        ],
+        [
+          "01-rag-lecture",
+          0.9451049790015131
+        ],
+        [
+          "03-project-kickoff",
+          0.9205724290400834
+        ],
+        [
+          "05-database-lecture",
+          0.872590741652714
+        ]
+      ],
+      "relevant_docs": [
+        "04-sprint-review",
+        "03-project-kickoff"
+      ]
+    },
+    {
+      "query_id": "q08",
+      "query": "What should notes do when an action item has no explicit owner or due date?",
+      "relevant_count": 1,
+      "retrieved_count": 5,
+      "metrics": {
+        "precision@1": 0.0,
+        "recall@1": 0.0,
+        "precision@3": 0.0,
+        "recall@3": 0.0,
+        "precision@5": 0.2,
+        "recall@5": 1.0,
+        "reciprocal_rank": 0.2,
+        "ndcg@1": 0.0,
+        "ndcg@3": 0.0,
+        "ndcg@5": 0.38685280723454163
+      },
+      "retrieved_docs": [
+        [
+          "01-rag-lecture",
+          1.0000000000000002
+        ],
+        [
+          "02-retrieval-evaluation",
+          0.9999999999999998
+        ],
+        [
+          "03-project-kickoff",
+          0.9583894232009336
+        ],
+        [
+          "06-design-review",
+          0.9475615889172952
+        ],
+        [
+          "04-sprint-review",
+          0.935177930357319
+        ]
+      ],
+      "relevant_docs": [
+        "04-sprint-review"
+      ]
+    },
+    {
+      "query_id": "q09",
+      "query": "How should the interface show sources on desktop and phone?",
+      "relevant_count": 1,
+      "retrieved_count": 5,
+      "metrics": {
+        "precision@1": 0.0,
+        "recall@1": 0.0,
+        "precision@3": 0.3333333333333333,
+        "recall@3": 1.0,
+        "precision@5": 0.2,
+        "recall@5": 1.0,
+        "reciprocal_rank": 0.3333333333333333,
+        "ndcg@1": 0.0,
+        "ndcg@3": 0.5,
+        "ndcg@5": 0.5
+      },
+      "retrieved_docs": [
+        [
+          "04-sprint-review",
+          1.0
+        ],
+        [
+          "05-database-lecture",
+          1.0
+        ],
+        [
+          "06-design-review",
+          0.9754769382857826
+        ],
+        [
+          "03-project-kickoff",
+          0.8183509403762096
+        ],
+        [
+          "02-retrieval-evaluation",
+          0.6493757982854557
+        ]
+      ],
+      "relevant_docs": [
+        "06-design-review"
+      ]
+    },
+    {
+      "query_id": "q10",
+      "query": "Does an audit timeline make database records tamper-proof?",
+      "relevant_count": 1,
+      "retrieved_count": 5,
+      "metrics": {
+        "precision@1": 0.0,
+        "recall@1": 0.0,
+        "precision@3": 0.0,
+        "recall@3": 0.0,
+        "precision@5": 0.0,
+        "recall@5": 0.0,
+        "reciprocal_rank": 0.0,
+        "ndcg@1": 0.0,
+        "ndcg@3": 0.0,
+        "ndcg@5": 0.0
+      },
+      "retrieved_docs": [
+        [
+          "01-rag-lecture",
+          1.0
+        ],
+        [
+          "03-project-kickoff",
+          1.0
+        ],
+        [
+          "04-sprint-review",
+          1.0
+        ],
+        [
+          "06-design-review",
+          1.0
+        ],
+        [
+          "02-retrieval-evaluation",
+          0.9920169154612097
+        ]
+      ],
+      "relevant_docs": [
+        "05-database-lecture"
+      ]
+    },
+    {
+      "query_id": "q11",
+      "query": "What happens if a submitted form has a stale stored version?",
+      "relevant_count": 1,
+      "retrieved_count": 4,
+      "metrics": {
+        "precision@1": 0.0,
+        "recall@1": 0.0,
+        "precision@3": 0.0,
+        "recall@3": 0.0,
+        "precision@5": 0.25,
+        "recall@5": 1.0,
+        "reciprocal_rank": 0.25,
+        "ndcg@1": 0.0,
+        "ndcg@3": 0.0,
+        "ndcg@5": 0.43067655807339306
+      },
+      "retrieved_docs": [
+        [
+          "03-project-kickoff",
+          1.0
+        ],
+        [
+          "04-sprint-review",
+          1.0
+        ],
+        [
+          "06-design-review",
+          0.9434844695904586
+        ],
+        [
+          "05-database-lecture",
+          0.9103164079879945
+        ]
+      ],
+      "relevant_docs": [
+        "05-database-lecture"
+      ]
+    },
+    {
+      "query_id": "q12",
+      "query": "Why must the evaluation questions stay separate from the searchable corpus?",
+      "relevant_count": 3,
+      "retrieved_count": 5,
+      "metrics": {
+        "precision@1": 1.0,
+        "recall@1": 0.3333333333333333,
+        "precision@3": 0.6666666666666666,
+        "recall@3": 0.6666666666666666,
+        "precision@5": 0.6,
+        "recall@5": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg@1": 1.0,
+        "ndcg@3": 0.7039180890341347,
+        "ndcg@5": 0.8854598815714874
+      },
+      "retrieved_docs": [
+        [
+          "04-sprint-review",
+          0.9999999999999998
+        ],
+        [
+          "06-design-review",
+          0.9999999999999998
+        ],
+        [
+          "03-project-kickoff",
+          0.9560475125951426
+        ],
+        [
+          "05-database-lecture",
+          0.9446537650471192
+        ],
+        [
+          "01-rag-lecture",
+          0.8990318614974985
+        ]
+      ],
+      "relevant_docs": [
+        "01-rag-lecture",
+        "04-sprint-review",
+        "03-project-kickoff"
+      ]
+    }
+  ],
+  "failure_analysis": {
+    "poor_precision_count": 1,
+    "poor_recall_count": 1,
+    "zero_results_count": 0,
+    "poor_precision_examples": [
+      {
+        "query_id": "q10",
+        "query": "Does an audit timeline make database records tamper-proof?",
+        "relevant_count": 1,
+        "retrieved_count": 5,
+        "metrics": {
+          "precision@1": 0.0,
+          "recall@1": 0.0,
+          "precision@3": 0.0,
+          "recall@3": 0.0,
+          "precision@5": 0.0,
+          "recall@5": 0.0,
+          "reciprocal_rank": 0.0,
+          "ndcg@1": 0.0,
+          "ndcg@3": 0.0,
+          "ndcg@5": 0.0
+        },
+        "retrieved_docs": [
+          [
+            "01-rag-lecture",
+            1.0
+          ],
+          [
+            "03-project-kickoff",
+            1.0
+          ],
+          [
+            "04-sprint-review",
+            1.0
+          ],
+          [
+            "06-design-review",
+            1.0
+          ],
+          [
+            "02-retrieval-evaluation",
+            0.9920169154612097
+          ]
+        ],
+        "relevant_docs": [
+          "05-database-lecture"
+        ]
+      }
+    ],
+    "poor_recall_examples": [
+      {
+        "query_id": "q10",
+        "query": "Does an audit timeline make database records tamper-proof?",
+        "relevant_count": 1,
+        "retrieved_count": 5,
+        "metrics": {
+          "precision@1": 0.0,
+          "recall@1": 0.0,
+          "precision@3": 0.0,
+          "recall@3": 0.0,
+          "precision@5": 0.0,
+          "recall@5": 0.0,
+          "reciprocal_rank": 0.0,
+          "ndcg@1": 0.0,
+          "ndcg@3": 0.0,
+          "ndcg@5": 0.0
+        },
+        "retrieved_docs": [
+          [
+            "01-rag-lecture",
+            1.0
+          ],
+          [
+            "03-project-kickoff",
+            1.0
+          ],
+          [
+            "04-sprint-review",
+            1.0
+          ],
+          [
+            "06-design-review",
+            1.0
+          ],
+          [
+            "02-retrieval-evaluation",
+            0.9920169154612097
+          ]
+        ],
+        "relevant_docs": [
+          "05-database-lecture"
+        ]
+      }
+    ],
+    "query_length_analysis": {
+      "short_queries": {
+        "count": 0,
+        "avg_precision@5": 0.0
+      },
+      "medium_queries": {
+        "count": 0,
+        "avg_precision@5": 0.0
+      },
+      "long_queries": {
+        "count": 12,
+        "avg_precision@5": 0.2708333333333333
+      }
+    },
+    "common_failure_patterns": [
+      "Vocabulary mismatch: 9 queries may have vocabulary mismatch issues",
+      "Low recall: 12 queries have recall@10 < 0.5 (missing relevant documents)"
+    ]
+  },
+  "evaluation_summary": "Evaluation Summary (12 queries):\n==================================================\nPrecision@1:  0.250 (25.0%)\nPrecision@5:  0.271 (27.1%)\nRecall@5:     0.917 (91.7%)\nMRR:          0.464\nNDCG@5:       0.546\n\nPerformance Assessment:\n\u2717 Poor precision - few queries return relevant results first\n\u2713 Excellent recall - finding most relevant documents\n",
+  "recommendations": [
+    "LOW PRECISION: Consider implementing query expansion or reranking to improve result quality.",
+    "RANKING ISSUES: Current ranking may not prioritize relevant documents. Consider BM25 or learning-to-rank models.",
+    "SHORT QUERY ISSUES: Brief queries perform poorly. Consider query completion or suggestion features.",
+    "QUERY PROCESSING: Longer queries perform better. Consider query parsing to extract key terms."
+  ]
+}

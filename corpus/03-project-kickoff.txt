@@ -1,0 +1,12 @@
+Title: Transcript assistant — kickoff
+Kind: meeting
+Date: 2026-10-29
+
+[00:00:00] Mira: This is a fictional product meeting. Our first release will accept timestamped TXT, SRT, and VTT transcripts. Audio transcription and speaker diarization are future work. The local application will not send email or create calendar events.
+[00:01:10] Rahul: I will implement the transcript parser and preserve speaker names and start times by 2026-11-07.
+[00:02:00] Leena: I will prepare twelve labelled retrieval questions by 2026-11-08. We need both meeting questions and lecture paraphrases.
+[00:03:15] Mira: The interface should show the source transcript and timestamp next to an answer. Users should be able to compare keyword retrieval, semantic retrieval, and hybrid retrieval. We will not call a keyword-only search a working semantic RAG system.
+[00:04:20] Rahul: For a small local corpus, we can store vectors in SQLite and perform exact cosine search. This is easy to inspect. It is not an approximate nearest-neighbour index. We would reconsider the storage and index when corpus size or concurrent usage grows.
+[00:05:35] Leena: We should only use synthetic transcripts in the free API demo. Real meetings may contain private information. Users must understand what content goes to the model provider.
+[00:06:40] Mira: Someone should investigate audio upload later. That is a suggestion; we have not assigned an owner or a due date.
+[00:07:10] Rahul: We should not promise an evaluation accuracy until we have measured it. The initial labelled set will be a development set, not an independent benchmark.

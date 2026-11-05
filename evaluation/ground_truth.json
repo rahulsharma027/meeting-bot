@@ -1,0 +1,14 @@
+{
+  "q01":["01-rag-lecture"],
+  "q02":["01-rag-lecture"],
+  "q03":["02-retrieval-evaluation"],
+  "q04":["02-retrieval-evaluation"],
+  "q05":["03-project-kickoff","04-sprint-review"],
+  "q06":["03-project-kickoff","04-sprint-review"],
+  "q07":["03-project-kickoff","04-sprint-review"],
+  "q08":["04-sprint-review"],
+  "q09":["06-design-review"],
+  "q10":["05-database-lecture"],
+  "q11":["05-database-lecture"],
+  "q12":["01-rag-lecture","03-project-kickoff","04-sprint-review"]
+}

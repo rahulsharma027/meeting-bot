@@ -1,0 +1,10 @@
+Title: Transcript assistant — design review
+Kind: meeting
+Date: 2026-11-03
+
+[00:00:00] Asha: This is a fictional design meeting. The desktop layout should put the answer and source passages side by side. On a phone the answer should appear first and source details should remain reachable below it.
+[00:01:15] Mira: We agreed that every source label will show the transcript title, speaker when present, and start timestamp. A timestamp is a location in the supplied transcript, not proof that the original audio was transcribed correctly.
+[00:02:30] Leena: I will run keyboard navigation checks. We have not set a deadline for that task.
+[00:03:20] Asha: We could add a quiz generator for lectures after the core question-answer flow is reliable. That is a proposal, not a release requirement.
+[00:04:45] Mira: The notes screen should use separate headings for lecture concepts, meeting decisions, and action items. If a meeting contains no explicit action items, it should say so.
+[00:06:00] Rahul: We should preserve original transcript text and use content hashes for duplicate detection. If the embedding model or chunking version changes, old vectors must not be silently reused.

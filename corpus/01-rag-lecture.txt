@@ -1,0 +1,12 @@
+Title: RAG fundamentals — lecture 01
+Kind: lecture
+Date: 2026-10-26
+
+[00:00:00] Dr. Sen: This is a fictional teaching transcript for our demo. Retrieval augmented generation, or RAG, adds information retrieved from our documents to a language model's input. We are not training the model when we upload documents.
+[00:01:12] Dr. Sen: Ingestion is the offline path. We parse a document, split it into chunks, create embeddings, and store the chunks and their metadata. At question time we embed the query, retrieve candidate chunks, assemble context, and ask the generation model for a grounded answer.
+[00:02:30] Dr. Sen: An embedding is a numeric vector representing aspects of meaning. Cosine similarity compares vector direction. Use the same embedding model and compatible configuration for document and query vectors. Changing the embedding model requires rebuilding the index.
+[00:04:05] Asha: Does a vector database know which answer is true?
+[00:04:12] Dr. Sen: No. Similarity is not factual verification. A passage can be semantically close and still not answer the question. Citations help people inspect sources, but valid citation IDs do not prove that the cited text supports every claim.
+[00:05:40] Dr. Sen: BM25 is keyword retrieval. It is useful for exact names and error codes. Dense retrieval is useful for paraphrases. Hybrid search combines the two ranked lists. Reciprocal rank fusion uses rank positions, avoiding a direct addition of incompatible BM25 and cosine scores.
+[00:07:15] Dr. Sen: Retrieving candidates and reranking are different steps. A reranker scores a query and candidate passage together. It can improve ordering, but adds model work and latency. You should measure whether it helps your particular evaluation set.
+[00:08:45] Dr. Sen: Keep evaluation questions and their expected relevant passages separate from the searchable corpus. Otherwise the answers can leak into the model input and make the evaluation misleading.

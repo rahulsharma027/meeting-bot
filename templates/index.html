@@ -1,0 +1,67 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>TranscriptLens — return to the moment</title>
+  <link rel="stylesheet" href="{% static 'app.css' %}">
+  <script src="{% static 'app.js' %}" defer></script>
+</head>
+<body>
+  <a class="skip" href="#question">Skip to your question</a>
+  <div class="app-shell">
+    <aside class="library" aria-label="Transcript library">
+      <a href="/" class="wordmark"><span class="brand-mark" aria-hidden="true">tl.</span>transcriptlens<span class="local-badge">LOCAL</span></a>
+      <details id="library-panel" class="library-panel" open><summary class="library-toggle">Browse your sessions <span aria-hidden="true">⌄</span></summary>
+      <div class="library-title"><h2>Your sessions</h2><span id="document-count" class="count">—</span></div>
+      <p class="aside-description">Lectures, conversations, and the details worth keeping.</p>
+      <label class="upload-button" for="transcript-file">+ Add a transcript<input id="transcript-file" type="file" accept=".txt,.srt,.vtt"></label>
+      <p class="file-help">TXT, SRT or VTT · UTF-8 · up to 2 MB</p>
+      <div id="documents" class="documents" aria-label="Choose a session"></div>
+      </details>
+      <div class="library-footer"><span class="status-dot" aria-hidden="true"></span> Local workspace<span>Synthetic demo sessions included</span></div>
+    </aside>
+
+    <main class="workspace">
+      <header class="topbar"><span class="breadcrumb">Workspace <span aria-hidden="true">/</span> <strong>Ask your sessions</strong></span><span id="connection" class="connection">Checking setup…</span></header>
+      <section class="intro" aria-labelledby="page-title">
+        <p class="eyebrow">FROM CONVERSATION TO CLARITY</p>
+        <h1 id="page-title">Return to the <em>moment.</em></h1>
+        <p>Find the explanation, decision, or next step.<br class="desktop-break"> Keep the transcript close to every answer.</p>
+      </section>
+
+      <div id="setup-banner" class="setup-banner" hidden><div><strong>Start with a search. Connect AI when you’re ready.</strong><p>The sample transcripts are ready. Add <code>GEMINI_API_KEY</code> to your local <code>.env</code> and restart for AI answers and notes.</p></div><a href="#how-it-works">See how it works ↓</a></div>
+      <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+      <div id="error" class="error" role="alert" hidden></div>
+
+      <section class="question-card" aria-label="Ask a question">
+        <form id="question-form">
+          <label class="question-label" for="question">What would you like to find?</label>
+          <textarea id="question" name="question" rows="2" minlength="3" maxlength="1000" placeholder="What changed about the parser deadline?" required></textarea>
+          <div class="question-toolbar"><span id="scope-label">Across all sessions</span><button id="search-button" type="submit" class="primary">Find source passages <span aria-hidden="true">↗</span></button></div>
+          <div class="advanced-controls">
+            <label>Search method<select id="mode"><option value="keyword">Keyword · BM25</option><option value="semantic">Semantic · embeddings</option><option value="hybrid">Hybrid · both</option></select></label>
+            <label>Source passages<select id="top-k"><option value="2">2 passages</option><option value="4" selected>4 passages</option><option value="6">6 passages</option></select></label>
+            <label class="answer-toggle"><input type="checkbox" id="generate"> Generate a cited answer</label>
+          </div>
+        </form>
+      </section>
+
+      <div class="suggestions" aria-label="Example questions"><span>Try asking</span><button type="button" data-question="What changed about the transcript parser deadline between kickoff and sprint review?">What changed about the deadline?</button><button type="button" data-question="How do keyword and semantic search complement each other?">Explain hybrid search</button><button type="button" data-question="What is the confirmed public launch date?">Is a launch date confirmed?</button></div>
+
+      <section class="results-layout" aria-label="Answer and source evidence">
+        <div class="answer-panel">
+          <div class="section-heading"><h2 id="result-heading">A little less searching.</h2><span id="result-label" class="result-label">A little more context.</span></div>
+          <div id="answer-content" class="answer-content" aria-live="polite"><div class="empty-answer"><span class="quotation-mark" aria-hidden="true">“</span><h3>Good notes start with listening.</h3><p>Ask across your sessions, or select one from the library to turn it into lecture notes or meeting minutes.</p><div class="sample-note"><span class="note-line"></span><span class="note-line short"></span><span class="sample-citation">Every answer has somewhere to return to.</span></div></div></div>
+          <button type="button" id="notes-button" class="notes-button" disabled>Make notes for selected session <span aria-hidden="true">↗</span></button>
+        </div>
+        <aside class="sources-panel" aria-label="Source passages"><div class="section-heading"><h2>From the transcript</h2><span id="source-count" class="count">0</span></div><p class="sources-help">Original passages. Timestamps locate the supplied transcript; audio is not attached.</p><div id="sources"><div class="sources-empty"><span class="source-glyph" aria-hidden="true">[00:00]</span><p>Your evidence will appear here.</p></div></div></aside>
+      </section>
+
+      <details id="trace" class="trace"><summary>Inspect this request <span>retrieval, models & timing</span></summary><div id="trace-content">Run a search to inspect its pipeline.</div></details>
+      <section id="how-it-works" class="how-it-works"><p class="eyebrow">A CLEAR PATH FROM SOURCE TO ANSWER</p><div class="pipeline-map"><div><span>01</span><h3>Read & preserve</h3><p>Speaker turns and timestamps stay attached to each passage.</p></div><div><span>02</span><h3>Retrieve what matters</h3><p>Keyword, semantic, or hybrid search selects the context.</p></div><div><span>03</span><h3>Answer with evidence</h3><p>AI drafts a response. Source IDs and exact quotes are checked.</p></div></div><p class="boundary-note">A valid quote does not prove that a claim is correct. Review the cited passages. Notes use the selected transcript directly; questions use retrieval.</p><p class="boundary-note data-flow">AI data flow: building the index sends transcript passages to Gemini. Semantic search sends your question; AI answers send the question and selected passages. Notes send the selected transcript. Use fictional or authorized material.</p></section>
+      <footer class="workspace-footer"><span>Made for understanding, one conversation at a time.</span><span>Local, single-user demo · no audio transcription</span></footer>
+    </main>
+  </div>
+</body>
+</html>
