@@ -2,6 +2,8 @@
 
 Architecture first. The items below are proposed implementation work after review, not completed capabilities. The text prototype remains a reference; no product features are added during this phase. See [architecture review](ARCHITECTURE_REVIEW.md), [architecture](ARCHITECTURE.md), and [contracts](CONTRACTS.md).
 
+Product direction, 2026-11-07: the target is a local/self-hosted Google Meet joining bot feeding speaker-labelled transcripts, recordings and questions into this portal. Run the [capture-route feasibility gate](MEETING_BOT.md) early alongside durable-source work; the bot is a primary product workflow, while source preservation and speech evaluation remain its prerequisites. Google has announced the Meet Media API shutdown, so do not base this route on that API. This prioritizes integration assessment; it does not mark capture or speech components complete.
+
 ## Ordered implementation
 
 | Order | Bounded component and dependency | Acceptance / evaluation gate |

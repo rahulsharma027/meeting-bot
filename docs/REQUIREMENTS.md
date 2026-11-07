@@ -21,7 +21,9 @@ Provide a local-first workspace for lecture and meeting recordings, speaker-attr
 
 ## Platform direction
 
-Windows is the initial local recording target. Google Meet is the first intended meeting platform. Local capture and a visible participant bot are separate capture adapters; the bot integration is a later milestone.
+Windows is the initial local recording target. Google Meet is the first intended meeting platform. The primary user experience is a visible bot joining the meeting and feeding this portal with recordings, speaker-labelled transcripts and a query engine. Local or self-hosted bot capture is confirmed. Local playback capture and a joining participant bot remain separate capture adapters; manual transcript import is an interim evaluation path. See the [meeting-bot flow and integration assessment](MEETING_BOT.md).
+
+Within a meeting, speaker labels must persist across turns: Person A → Person B → Person A. Anonymous labels are sufficient initially; renaming is explicit. Live text/speaker assignments are provisional until finalized, with unknown/overlapping speech preserved. Each meeting should expose Recording, Transcript and Ask views, with source-to-audio navigation after the relevant adapters are verified.
 
 ## Initial constraints
 

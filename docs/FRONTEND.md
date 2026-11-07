@@ -1,14 +1,24 @@
 # Frontend direction and stack recommendation
 
-Status: reference-interface refresh, 2026-11-07. No recording, ASR, diarization or meeting-participant integration is introduced by this work.
+Status: reference-interface refresh and audited refinement, 2026-11-07. No recording, ASR, diarization or meeting-participant integration is introduced by this work. See [the UI audit](UI_AUDIT.md) for findings, treatment and verification.
 
 ## Interface direction
 
-Use a working research workspace rather than a promotional landing page: persistent dark session navigation, a pale reading canvas, restrained lime accents, and adjacent insight/evidence surfaces. The search composer is the primary action. Session notes remain a separate operation with a visible session prerequisite. Supplied transcript timestamps are explicitly distinguished from audio playback.
+Use an answer-engine layout: a scrollable response pane above a bottom composer, with sage session navigation and muted teal actions. The composer contains the question field, transcript attachment control, Options, a model selector and Send. It occupies a separate layout row, so it never covers response content. Enter sends a question; Shift+Enter adds a line. Session rows show only title and date.
+
+Responses accumulate above the composer and restore after a reload. Keyword mode shows short exact transcript excerpts; model answers show their first two points with additional material under More detail. Full source text opens in a focus-contained drawer from a passage or citation. Each response retains its own source snapshot, so earlier references still resolve after later questions or a refresh. Supplied timestamps remain distinct from audio playback.
 
 Manrope is self-hosted under `static/fonts/`, with the upstream SIL Open Font License included. Font loading makes no external request. Icons use a small local SVG symbol set; transcript/model output continues to render through DOM text nodes, never trusted HTML. No decorative recordings, fake activity, or unavailable recording controls are shown.
 
-Small screens use a collapsible session library and stacked reading surfaces. Inputs, focus rings, reduced-motion behaviour and loading/error states remain part of the interface. Model setup, technical request details and privacy disclosures are available without dominating the search workflow.
+Small screens use an overlay session library and the same bottom composer. Each response names its original session scope. Keyboard focus survives session selection, and dialogs support Escape and focus return. Progress, errors and retry controls appear only when relevant. Search method, context size, notes, import limits and request diagnostics live under Options. Privacy has a separate button in the workspace header, opening a readable panel for local storage, cloud data flow and history controls; it is not part of workspace preferences.
+
+The attachment button uses the existing TXT/SRT/VTT ingestion endpoint and selects the imported session. It is not a general document/image upload or an audio transcription feature. The model menu offers Sources only and the actual configured Gemini identifier; unavailable model access is not represented as connected. Selecting a cloud path exposes its data-flow notice beside Send.
+
+Model setup opens its own focused dialog from the model menu or Options. With no key configured, it shows two steps: add the key to the local environment file and restart the application. With a configured key, it shows the actual model identifier. Check setup refreshes local configuration status through the existing status endpoint; it does not call a model or opt into cloud answers. Semantic-index controls are under Advanced and remain an explicit cloud operation. The panel uses 16px body text, a fixed close header and backdrop dismissal, without mixing in workspace preferences or diagnostics.
+
+Conversation records and source snapshots are saved in browser-local IndexedDB. Draft questions, session scope, search options, model preference and reading position also restore in the same browser profile and origin. Options → Clear conversation removes saved turns, source snapshots and the draft while preserving imported sessions. This is browser-local persistence, with no account synchronization; clearing site data removes it. Credentials are never stored with history.
+
+New responses reveal words progressively after the complete server response has been saved. Refreshing during this reveal restores the full response immediately, with no repeated API call or entrance animation. Reduced-motion preferences bypass the reveal. A request interrupted before completion restores as an interrupted turn with an explicit retry button; failed requests also retain a retry control. Try a sample question submits directly. Questions remain independent API requests: prior UI turns are not sent as model chat context. The reveal is a presentation effect, not provider token streaming.
 
 ## Current implementation
 

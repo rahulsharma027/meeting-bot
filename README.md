@@ -31,6 +31,8 @@ The [architecture review](docs/ARCHITECTURE_REVIEW.md) records the inspected pro
 
 The proposed system processes locally by default, with explicit opt-in for cloud operations. The reference prototype currently offers optional cloud-backed embeddings/generation; local speech/generation runtimes and the full processing-policy boundary are not yet implemented.
 
+The intended meeting workflow is a [local/self-hosted joining bot](docs/MEETING_BOT.md) that produces stable Person A/B transcripts and recordings inside this portal. The linked assessment records the capture-route constraints and first live acceptance gate; those capabilities are not implemented by the current text prototype.
+
 ## Reference prototype
 
 The current reference implementation uses Python, Django, SQLite, and a browser interface. These describe the existing prototype; the architecture review will determine the implementation choices for subsequent components.
@@ -42,9 +44,12 @@ The current reference implementation uses Python, Django, SQLite, and a browser 
 | BM25 keyword search | Implemented and evaluated on synthetic examples |
 | Semantic search and hybrid rank fusion | Implemented; live embedding verification pending |
 | Cited Q&A and selected-session notes | Implemented; live generation verification pending |
+| Browser conversation history and progressive response reveal | Implemented; restores questions, sources and drafts after refresh |
 | Audio recording and playback | Planned |
 | Automatic speech recognition and diarization | Planned |
 | Google Meet participant bot | Planned |
+
+For preparing recordings as importable text, see the [transcript workflow](docs/TRANSCRIPT_WORKFLOW.md) and [synthetic TXT template](docs/examples/transcript-template.txt).
 
 ![TranscriptLens reference interface](docs/screenshots/desktop.jpg)
 
@@ -110,6 +115,7 @@ See [verification results and limitations](docs/VERIFICATION.md). The current im
 - [Architecture](docs/ARCHITECTURE.md)
 - [Component data and lifecycle contracts](docs/CONTRACTS.md)
 - [Frontend direction and stack recommendation](docs/FRONTEND.md)
+- [UI audit and refinement results](docs/UI_AUDIT.md)
 - [Component roadmap](docs/BUILD_PLAN.md)
 - [Reference implementation](docs/PROTOTYPE.md)
 - [Verification](docs/VERIFICATION.md)

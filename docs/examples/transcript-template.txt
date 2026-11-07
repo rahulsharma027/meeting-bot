@@ -1,0 +1,6 @@
+Title: Synthetic technical planning example
+Kind: meeting
+Date: 2026-11-07
+
+[00:00:05] Speaker 1: This is a synthetic example. The API retries failed requests three times.
+[00:00:18] Speaker 2: We agreed to keep the retry limit at three for this release.
