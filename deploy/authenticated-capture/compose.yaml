@@ -1,0 +1,226 @@
+# Minimal capture-only Compose surface, based on upstream Vexa v0.12.28.
+# Run prepare.py first. No meeting is joined during startup.
+name: transcriptlens-auth-capture
+
+x-database-env: &database-env
+  DB_HOST: postgres
+  DB_PORT: "5432"
+  DB_NAME: vexa
+  DB_USER: postgres
+  DB_PASSWORD: ${DB_PASSWORD:?Run prepare.py}
+
+x-recording-env: &recording-env
+  MINIO_ENDPOINT: storage:9000
+  MINIO_ACCESS_KEY: ${STORAGE_ACCESS_KEY:?Run prepare.py}
+  MINIO_SECRET_KEY: ${STORAGE_SECRET_KEY:?Run prepare.py}
+  MINIO_BUCKET: vexa
+  MINIO_SECURE: "false"
+
+x-session-env: &session-env
+  BOT_S3_ENDPOINT: http://storage:9000
+  BOT_S3_BUCKET: vexa
+  BOT_S3_ACCESS_KEY: ${USERDATA_ACCESS_KEY:?Run prepare.py}
+  BOT_S3_SECRET_KEY: ${USERDATA_SECRET_KEY:?Run prepare.py}
+  BOT_USERDATA_S3_PATH: userdata/transcriptlens-bot-1
+
+x-health: &health
+  interval: 5s
+  timeout: 5s
+  retries: 30
+  start_period: 10s
+
+services:
+  postgres:
+    image: postgres:17-alpine@sha256:b0f9560a2de083e2cc7382e75f808c7381a32852a7ec49117deedb300e552b24
+    environment:
+      POSTGRES_DB: vexa
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      TZ: UTC
+      PGTZ: UTC
+    command: [postgres, -c, idle_in_transaction_session_timeout=60000]
+    volumes: [database:/var/lib/postgresql/data]
+    networks: [control]
+    healthcheck:
+      <<: *health
+      test: [CMD, pg_isready, -U, postgres, -d, vexa]
+    mem_limit: 768m
+    restart: unless-stopped
+
+  redis:
+    image: valkey/valkey:8-alpine@sha256:081c2f5cb575efc901aa80ff9cdbd1ec6a301682fd35e1ebb4b0990a4a4a8507
+    command: [valkey-server, --appendonly, "yes", --appendfsync, everysec]
+    volumes: [cache:/data]
+    networks: [control, bots]
+    healthcheck:
+      <<: *health
+      test: [CMD, valkey-cli, ping]
+    mem_limit: 256m
+    restart: unless-stopped
+
+  storage:
+    image: versity/versitygw:v1.8.0@sha256:30292fc2eeacc67a36993b01f7a7a5e3361a19cced0e80c1d71cfa2a4b0a2499
+    entrypoint: [/bin/sh, -ec]
+    command:
+      - mkdir -p /srv/data /srv/iam; exec versitygw --port :9000 --health /health --iam-dir /srv/iam --quiet posix /srv/data
+    environment:
+      ROOT_ACCESS_KEY: ${STORAGE_ACCESS_KEY}
+      ROOT_SECRET_KEY: ${STORAGE_SECRET_KEY}
+    volumes: [storage:/srv]
+    networks: [bots]
+    healthcheck:
+      <<: *health
+      test: [CMD, wget, -q, -O, /dev/null, "http://127.0.0.1:9000/health"]
+    mem_limit: 256m
+    restart: unless-stopped
+
+  storage-init:
+    image: vexaai/v012-meeting-api@sha256:cca46266feedcff29c3478472fd40133ba51f3c49a489a290040a56f1f0f3dca
+    entrypoint: [python, /opt/transcriptlens/storage_init.py]
+    environment:
+      <<: [*recording-env, *session-env]
+      STORAGE_ENDPOINT: http://storage:9000
+    volumes:
+      - ${STORAGE_INIT_SCRIPT:?Run prepare.py}:/opt/transcriptlens/storage_init.py:ro
+    networks: [bots]
+    depends_on:
+      storage: {condition: service_healthy}
+    mem_limit: 384m
+
+  admin-api:
+    image: vexaai/v012-admin-api@sha256:4c702354384eafe3a933cd537a106b7c15067cfd368a5f6da1a6e675e7e03e04
+    environment:
+      <<: *database-env
+      ADMIN_API_TOKEN: ${ADMIN_TOKEN:?Run prepare.py}
+      INTERNAL_API_SECRET: ${INTERNAL_API_SECRET:?Run prepare.py}
+      VEXA_FLOWS_API_URL: ""
+      VEXA_FLOWS_API_KEY: ""
+    networks: [control]
+    depends_on:
+      postgres: {condition: service_healthy}
+    healthcheck:
+      <<: *health
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8001/health',timeout=3)"]
+    mem_limit: 512m
+    init: true
+    restart: unless-stopped
+
+  runtime:
+    image: vexaai/v012-runtime@sha256:a1f6448fbb380b9433364e8b572ec25a12aa4f274bf403f1d83a89cbf5812f2d
+    environment:
+      RUNTIME_BACKEND: docker
+      BROWSER_IMAGE: ${AUTH_BOT_IMAGE:?Build Dockerfile.bot and set its immutable image ID}
+      DOCKER_NETWORK: transcriptlens-auth-capture_bots
+      DOCKER_SHM_SIZE: 1g
+      REDIS_URL: ""
+      AGENT_IMAGE: ""
+      AGENT_WORKER_IMAGE: ""
+      HOST_CLAUDE_CREDENTIALS: ""
+      VEXA_LLM_KILL_SWITCH: "1"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks: [control]
+    healthcheck:
+      <<: *health
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8090/health',timeout=3)"]
+    mem_limit: 512m
+    init: true
+    restart: unless-stopped
+
+  meeting-api:
+    image: vexaai/v012-meeting-api@sha256:cca46266feedcff29c3478472fd40133ba51f3c49a489a290040a56f1f0f3dca
+    environment:
+      <<: [*database-env, *recording-env, *session-env]
+      REDIS_URL: redis://redis:6379/0
+      RUNTIME_API_URL: http://runtime:8090
+      ADMIN_API_URL: http://admin-api:8001
+      INTERNAL_API_SECRET: ${INTERNAL_API_SECRET}
+      ADMIN_TOKEN: ${ADMIN_TOKEN}
+      DEFAULT_BOT_NAME: TranscriptLens Recorder
+      BOT_AUTHENTICATED: "true"
+      TRANSCRIBE_ENABLED: "false"
+      RECORDING_ENABLED: "true"
+      TRANSCRIPTION_SERVICE_URL: ""
+      TRANSCRIPTION_SERVICE_TOKEN: ""
+      VEXA_FLOWS_API_URL: ""
+      VEXA_FLOWS_API_KEY: ""
+      VEXA_LLM_KILL_SWITCH: "1"
+    networks: [control, bots]
+    depends_on:
+      postgres: {condition: service_healthy}
+      redis: {condition: service_healthy}
+      runtime: {condition: service_healthy}
+      storage-init: {condition: service_completed_successfully}
+    healthcheck:
+      <<: *health
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/health',timeout=3)"]
+    mem_limit: 768m
+    init: true
+    restart: unless-stopped
+
+  gateway:
+    image: vexaai/v012-gateway@sha256:2e76319812f28adbb6bc328ac0a7484d3826924a9d38a9dd9599dd190fbb0f19
+    environment:
+      ADMIN_API_URL: http://admin-api:8001
+      MEETING_API_URL: http://meeting-api:8080
+      AGENT_API_URL: ""
+      MCP_URL: ""
+      REDIS_URL: redis://redis:6379/0
+      INTERNAL_API_SECRET: ${INTERNAL_API_SECRET}
+      GUARD_ENABLED: "true"
+      GUARD_ENABLE_REDIS: "true"
+    ports: ["127.0.0.1:18056:8000"]
+    networks: [control, edge]
+    depends_on:
+      admin-api: {condition: service_healthy}
+      meeting-api: {condition: service_healthy}
+      redis: {condition: service_healthy}
+    healthcheck:
+      <<: *health
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health',timeout=3)"]
+    mem_limit: 512m
+    init: true
+    restart: unless-stopped
+
+  session-export:
+    profiles: [provision]
+    image: vexaai/vexa-bot@sha256:e2398bfac7fa8671c209e996bc6451598b58438c851956ec050a0300f5a5354b
+    entrypoint: [node, /opt/transcriptlens/export-session.cjs]
+    environment:
+      <<: *session-env
+    volumes:
+      - signin-profile:/profile:ro
+      - session-state:/state
+      - ./export-session.cjs:/opt/transcriptlens/export-session.cjs:ro
+    networks: [bots]
+    depends_on:
+      storage-init: {condition: service_completed_successfully}
+    mem_limit: 768m
+
+  session-verify:
+    profiles: [provision]
+    image: ${AUTH_BOT_IMAGE:?Build Dockerfile.bot and set its immutable image ID}
+    environment:
+      <<: *session-env
+      BOT_WORKER_ENTRY: /opt/transcriptlens/verify-session.cjs
+    volumes:
+      - ./verify-session.cjs:/opt/transcriptlens/verify-session.cjs:ro
+    networks: [bots]
+    shm_size: 1gb
+    mem_limit: 3g
+    init: true
+
+volumes:
+  database:
+  cache:
+  storage:
+  session-state:
+  signin-profile:
+    external: true
+    name: transcriptlens-bot-signin_profile
+
+networks:
+  control:
+    internal: true
+  bots:
+  edge:

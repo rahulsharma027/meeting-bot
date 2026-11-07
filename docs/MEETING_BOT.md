@@ -2,6 +2,8 @@
 
 Status: confirmed product direction and proposed integration pilot, 2026-11-07. Capture, speech recognition, diarization and recording playback are not implemented in TranscriptLens yet.
 
+The [capture-only deployment kit](CAPTURE_PILOT.md) prepares joining/recording checks independently of the text portal. The guest-join attempt failed without a recording. The separate [authenticated deployment](AUTHENTICATED_CAPTURE.md) now restores a dedicated Google account and has joined a real approved Meet call; its host confirmed the bot in the participant list. Its short recording completed, exported with matching checksums and decoded locally with non-silent audio. Listening quality, speech processing and multi-speaker attribution remain separate verification gates.
+
 ## Intended experience
 
 The primary workflow is a visible meeting bot that joins Google Meet, captures authorized audio, attributes speech to stable speakers, and saves everything in the existing portal. External transcript preparation is an interim evaluation path. Local or self-hosted capture is confirmed; speech recognition and diarization stay local by default. A third-party hosted capture or speech endpoint is not an implicit fallback.

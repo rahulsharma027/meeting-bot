@@ -2,7 +2,7 @@
 
 A lecture and meeting assistant for recording conversations, preserving speaker-attributed transcripts, and answering questions with timestamped evidence.
 
-**Project status: architecture and component design.** The repository includes an initial text-transcript reference prototype. Audio capture, speech recognition, speaker diarization, and Google Meet bot participation are planned components. Live model-backed retrieval and generation have not yet been verified.
+**Project status: text prototype plus a separate capture pilot.** The portal supports text-transcript workflows. A self-hosted Google Meet bot has joined and exported a short approved recording in a separate pilot; speech recognition, speaker diarization and portal audio integration remain upcoming components. Live model-backed retrieval and generation have not yet been verified.
 
 ## Project goals
 
@@ -32,6 +32,8 @@ The [architecture review](docs/ARCHITECTURE_REVIEW.md) records the inspected pro
 The proposed system processes locally by default, with explicit opt-in for cloud operations. The reference prototype currently offers optional cloud-backed embeddings/generation; local speech/generation runtimes and the full processing-policy boundary are not yet implemented.
 
 The intended meeting workflow is a [local/self-hosted joining bot](docs/MEETING_BOT.md) that produces stable Person A/B transcripts and recordings inside this portal. The linked assessment records the capture-route constraints and first live acceptance gate; those capabilities are not implemented by the current text prototype.
+
+An experimental [capture-only pilot kit](docs/CAPTURE_PILOT.md) and separate [authenticated deployment](docs/AUTHENTICATED_CAPTURE.md) evaluate self-hosted capture before speech processing or portal integration. The dedicated-account bot joined a real approved Meet call, with participant visibility confirmed by its host. A 120.18-second audio file finalized, exported with matching checksums and decoded locally with non-silent samples. Listening quality, local speech and portal integration remain subsequent checks.
 
 ## Reference prototype
 

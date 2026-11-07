@@ -1,0 +1,98 @@
+# Experimental capture-only pilot. See docs/CAPTURE_PILOT.md.
+name: transcriptlens-capture-pilot
+services:
+  database:
+    image: postgres:17-alpine@sha256:b0f9560a2de083e2cc7382e75f808c7381a32852a7ec49117deedb300e552b24
+    environment:
+      POSTGRES_DB: vexa
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?Run the pilot helper first}
+    volumes:
+      - database:/var/lib/postgresql/data
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U postgres -d vexa"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+    mem_limit: 768m
+    restart: unless-stopped
+
+  storage:
+    image: versity/versitygw:v1.10.0@sha256:89cad13cc981986ee284cbafea4613f9533ce6fd5f37a2c96c4c4fb8adb3a316
+    entrypoint: [/bin/sh, -ec]
+    command:
+      - mkdir -p /srv/data /srv/iam; exec versitygw --port :9000 --health /health --iam-dir /srv/iam --quiet posix /srv/data
+    environment:
+      ROOT_ACCESS_KEY: ${STORAGE_ACCESS_KEY:?Run the pilot helper first}
+      ROOT_SECRET_KEY: ${STORAGE_SECRET_KEY:?Run the pilot helper first}
+    volumes:
+      - recordings:/srv
+    healthcheck:
+      test: [CMD, wget, -q, -O, /dev/null, "http://127.0.0.1:9000/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+    mem_limit: 256m
+    restart: unless-stopped
+
+  storage-init:
+    image: versity/versitygw:v1.10.0@sha256:89cad13cc981986ee284cbafea4613f9533ce6fd5f37a2c96c4c4fb8adb3a316
+    depends_on:
+      storage:
+        condition: service_healthy
+    environment:
+      ADMIN_ACCESS_KEY: ${STORAGE_ACCESS_KEY}
+      ADMIN_SECRET_KEY: ${STORAGE_SECRET_KEY}
+    entrypoint: [/bin/sh, -ec]
+    command:
+      - |
+        result=$$(versitygw admin --endpoint-url http://storage:9000 create-bucket --bucket vexa --owner "$$ADMIN_ACCESS_KEY" 2>&1) || {
+          printf '%s' "$$result" | grep -Eq 'BucketAlreadyOwnedByYou|BucketAlreadyExists' || exit 1
+        }
+    mem_limit: 256m
+
+  app:
+    # Published v012 manifest, resolved 2026-11-07; source/API review recorded in the guide.
+    image: vexaai/vexa-lite@sha256:9eebb534fdab4079baf11af678968ac8d9679e20ce48db206bcf5a62b85eb538
+    platform: linux/amd64
+    depends_on:
+      database:
+        condition: service_healthy
+      storage-init:
+        condition: service_completed_successfully
+    ports:
+      - "127.0.0.1:8056:8056"
+      - "127.0.0.1:3001:3001"
+    environment:
+      DB_HOST: database
+      DB_PORT: "5432"
+      DB_NAME: vexa
+      DB_USER: postgres
+      DB_PASSWORD: ${DB_PASSWORD}
+      ADMIN_API_TOKEN: ${ADMIN_TOKEN:?Run the pilot helper first}
+      ADMIN_TOKEN: ${ADMIN_TOKEN}
+      MINIO_ENDPOINT: storage:9000
+      MINIO_ACCESS_KEY: ${STORAGE_ACCESS_KEY}
+      MINIO_SECRET_KEY: ${STORAGE_SECRET_KEY}
+      MINIO_BUCKET: vexa
+      MINIO_SECURE: "false"
+      RECORDING_ENABLED: "true"
+      TRANSCRIBE_ENABLED: "false"
+      TRANSCRIPTION_SERVICE_URL: ""
+      TRANSCRIPTION_SERVICE_TOKEN: ""
+      VEXA_LLM_KILL_SWITCH: "1"
+      VEXA_FEATURES: ""
+      VEXA_PUBLIC_API_URL: http://localhost:8056
+      TERMINAL_PUBLIC_URL: http://localhost:3001
+    volumes:
+      - state:/var/lib/vexa/state
+    security_opt:
+      - seccomp=${SECCOMP_PROFILE:?Run the pilot helper first}
+    shm_size: 2gb
+    mem_limit: 5g
+    restart: unless-stopped
+
+volumes:
+  database:
+  recordings:
+  state:

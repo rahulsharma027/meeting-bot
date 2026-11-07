@@ -1,0 +1,4 @@
+FROM vexaai/vexa-bot@sha256:e2398bfac7fa8671c209e996bc6451598b58438c851956ec050a0300f5a5354b
+COPY patch-browser.cjs /opt/transcriptlens/patch-browser.cjs
+RUN node /opt/transcriptlens/patch-browser.cjs \
+    && node --check /app/core/meetings/services/bot/dist/capture-bridge.js

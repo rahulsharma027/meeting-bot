@@ -1,0 +1,36 @@
+# Dedicated-account provisioning only; no meeting or recording is started.
+name: transcriptlens-bot-signin
+services:
+  browser:
+    # Upstream v0.12.28, registry digest verified 2026-11-07.
+    image: vexaai/vexa-bot@sha256:e2398bfac7fa8671c209e996bc6451598b58438c851956ec050a0300f5a5354b
+    platform: linux/amd64
+    entrypoint: [python3, /opt/transcriptlens/signin.py]
+    environment:
+      DISPLAY: :99
+      AUTH_PLATFORM: google
+      LOGIN_PROFILE_DIR: /profile/browser
+      LOGIN_TIMEOUT_MS: "1200000"
+      BOT_S3_ENDPOINT: ""
+      BOT_S3_BUCKET: ""
+      BOT_USERDATA_S3_PATH: ""
+    ports:
+      - "127.0.0.1:16080:6080"
+    volumes:
+      - ./signin.py:/opt/transcriptlens/signin.py:ro
+      - profile:/profile
+    security_opt:
+      - seccomp=${SECCOMP_PROFILE:?Set the verified browser sandbox profile path}
+    shm_size: 1gb
+    mem_limit: 3g
+    pids_limit: 512
+    init: true
+    restart: "no"
+    healthcheck:
+      test: [CMD, python3, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:6080/index.html', timeout=2)"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+
+volumes:
+  profile:
