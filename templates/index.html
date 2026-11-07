@@ -2,65 +2,112 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>TranscriptLens — return to the moment</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#191c2c">
+  <title>TranscriptLens — find the thread</title>
+  <link rel="preload" href="{% static 'fonts/manrope-variable.ttf' %}" as="font" type="font/ttf" crossorigin>
   <link rel="stylesheet" href="{% static 'app.css' %}">
   <script src="{% static 'app.js' %}" defer></script>
 </head>
 <body>
   <a class="skip" href="#question">Skip to your question</a>
+  <svg class="icon-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <symbol id="icon-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/></symbol>
+      <symbol id="icon-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+      <symbol id="icon-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol>
+      <symbol id="icon-pages" viewBox="0 0 24 24"><rect x="6" y="3" width="14" height="17" rx="2"/><path d="M3 7v13a2 2 0 0 0 2 2h11M10 8h6m-6 4h6m-6 4h4"/></symbol>
+      <symbol id="icon-spark" viewBox="0 0 24 24"><path d="m12 3 2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5L12 3Z"/></symbol>
+      <symbol id="icon-shield" viewBox="0 0 24 24"><path d="m12 3 8 3v6c0 4-4 7-8 9-4-2-8-5-8-9V6l8-3Z"/><path d="m8 12 3 3 5-6"/></symbol>
+      <symbol id="icon-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+      <symbol id="icon-lines" viewBox="0 0 24 24"><path d="M5 5h14M5 10h14M5 15h9M5 20h11"/></symbol>
+    </defs>
+  </svg>
+
   <div class="app-shell">
     <aside class="library" aria-label="Transcript library">
-      <a href="/" class="wordmark"><span class="brand-mark" aria-hidden="true">tl.</span>transcriptlens<span class="local-badge">LOCAL</span></a>
-      <details id="library-panel" class="library-panel" open><summary class="library-toggle">Browse your sessions <span aria-hidden="true">⌄</span></summary>
-      <div class="library-title"><h2>Your sessions</h2><span id="document-count" class="count">—</span></div>
-      <p class="aside-description">Lectures, conversations, and the details worth keeping.</p>
-      <label class="upload-button" for="transcript-file">+ Add a transcript<input id="transcript-file" type="file" accept=".txt,.srt,.vtt"></label>
-      <p class="file-help">TXT, SRT or VTT · UTF-8 · up to 2 MB</p>
-      <div id="documents" class="documents" aria-label="Choose a session"></div>
+      <a href="/" class="wordmark" aria-label="TranscriptLens home">
+        <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M8 10v12m5-17v22m6-19v16m5-12v8"/></svg></span>
+        <span>transcript<span class="wordmark-light">lens</span><small>MAKE EVERY WORD COUNT</small></span>
+      </a>
+
+      <details id="library-panel" class="library-panel" open>
+        <summary class="library-toggle">Your session library <svg class="icon"><use href="#icon-chevron"/></svg></summary>
+        <label class="upload-button" for="transcript-file"><svg class="icon"><use href="#icon-plus"/></svg> Import transcript<input id="transcript-file" type="file" accept=".txt,.srt,.vtt"></label>
+        <p class="file-help">TXT, SRT, VTT · up to 2 MB</p>
+        <div class="library-title"><h2>YOUR LIBRARY</h2><span id="document-count" class="count">—</span></div>
+        <label class="library-search"><svg class="icon"><use href="#icon-search"/></svg><input id="library-search" type="search" placeholder="Find a session…" aria-label="Filter sessions"></label>
+        <div id="documents" class="documents" aria-label="Choose a session"></div>
+        <p id="library-empty" class="library-empty" hidden>No sessions match this search.</p>
       </details>
-      <div class="library-footer"><span class="status-dot" aria-hidden="true"></span> Local workspace<span>Synthetic demo sessions included</span></div>
+
+      <div class="library-footer">
+        <div class="local-storage"><svg class="icon"><use href="#icon-shield"/></svg><div><strong>Stored on this device</strong><span>Cloud AI is optional.</span></div></div>
+        <a href="#how-it-works">Data &amp; privacy <span aria-hidden="true">↗</span></a>
+        <p>Synthetic sample sessions included.</p>
+      </div>
     </aside>
 
     <main class="workspace">
-      <header class="topbar"><span class="breadcrumb">Workspace <span aria-hidden="true">/</span> <strong>Ask your sessions</strong></span><span id="connection" class="connection">Checking setup…</span></header>
-      <section class="intro" aria-labelledby="page-title">
-        <p class="eyebrow">FROM CONVERSATION TO CLARITY</p>
-        <h1 id="page-title">Return to the <em>moment.</em></h1>
-        <p>Find the explanation, decision, or next step.<br class="desktop-break"> Keep the transcript close to every answer.</p>
-      </section>
+      <header class="topbar">
+        <span class="breadcrumb"><svg class="icon"><use href="#icon-pages"/></svg> Workspace <span aria-hidden="true">/</span> <strong>Ask &amp; explore</strong></span>
+        <span id="connection" class="connection">Loading workspace…</span>
+      </header>
 
-      <div id="setup-banner" class="setup-banner" hidden><div><strong>Start with a search. Connect AI when you’re ready.</strong><p>The sample transcripts are ready. Add <code>GEMINI_API_KEY</code> to your local <code>.env</code> and restart for AI answers and notes.</p></div><a href="#how-it-works">See how it works ↓</a></div>
-      <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
-      <div id="error" class="error" role="alert" hidden></div>
+      <div class="workspace-body">
+        <section class="intro" aria-labelledby="page-title">
+          <div><p class="eyebrow"><span></span> LESS REPLAYING. MORE UNDERSTANDING.</p><h1 id="page-title">Find the <span>thread.</span></h1><p>The ideas, decisions, and details. Right where you left them.</p></div>
+          <a class="evidence-badge" href="#sources-panel"><svg class="icon"><use href="#icon-lines"/></svg><span>Every insight.<br><strong>Back to its source.</strong></span><span aria-hidden="true">↗</span></a>
+        </section>
 
-      <section class="question-card" aria-label="Ask a question">
-        <form id="question-form">
-          <label class="question-label" for="question">What would you like to find?</label>
-          <textarea id="question" name="question" rows="2" minlength="3" maxlength="1000" placeholder="What changed about the parser deadline?" required></textarea>
-          <div class="question-toolbar"><span id="scope-label">Across all sessions</span><button id="search-button" type="submit" class="primary">Find source passages <span aria-hidden="true">↗</span></button></div>
-          <div class="advanced-controls">
-            <label>Search method<select id="mode"><option value="keyword">Keyword · BM25</option><option value="semantic">Semantic · embeddings</option><option value="hybrid">Hybrid · both</option></select></label>
-            <label>Source passages<select id="top-k"><option value="2">2 passages</option><option value="4" selected>4 passages</option><option value="6">6 passages</option></select></label>
-            <label class="answer-toggle"><input type="checkbox" id="generate"> Generate a cited answer</label>
+        <nav class="view-nav" aria-label="Workspace sections">
+          <a class="active" href="#question-form" aria-current="location"><svg class="icon"><use href="#icon-spark"/></svg> Ask &amp; explore</a>
+          <a href="#sources-panel"><svg class="icon"><use href="#icon-lines"/></svg> Source evidence</a>
+          <a href="#how-it-works">How it works <span aria-hidden="true">↗</span></a>
+        </nav>
+
+        <div id="setup-banner" class="setup-banner" hidden><span class="setup-symbol" aria-hidden="true">i</span><div><strong>Your workspace is ready to search.</strong><p>Connect a model to add cited answers and session notes.</p></div><a href="#model-setup">Model setup <span aria-hidden="true">↗</span></a></div>
+        <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+        <div id="error" class="error" role="alert" hidden></div>
+
+        <section class="question-card" aria-label="Ask your transcripts">
+          <form id="question-form">
+            <label class="question-label" for="question"><svg class="icon"><use href="#icon-spark"/></svg> What’s on your mind?</label>
+            <textarea id="question" name="question" rows="1" minlength="3" maxlength="1000" placeholder="Ask a question. Connect the dots." required></textarea>
+            <div class="question-toolbar"><span class="scope"><svg class="icon"><use href="#icon-pages"/></svg><span id="scope-label">Across all sessions</span></span><button id="search-button" type="submit" class="primary"><span id="search-button-label">Find passages</span><svg class="icon"><use href="#icon-arrow"/></svg></button></div>
+            <div class="advanced-controls">
+              <label>Search method<select id="mode"><option value="keyword">Keyword search</option><option value="semantic">Semantic search</option><option value="hybrid">Hybrid search</option></select></label>
+              <label>Context size<select id="top-k"><option value="2">2 passages</option><option value="4" selected>4 passages</option><option value="6">6 passages</option></select></label>
+              <label class="answer-toggle"><input type="checkbox" id="generate"><span class="toggle-track" aria-hidden="true"></span><span>Generate cited answer<small>Uses cloud AI when connected</small></span></label>
+            </div>
+          </form>
+        </section>
+
+        <div class="suggestions" aria-label="Example questions"><span>EXPLORE THE SAMPLES</span><button type="button" data-question="What changed about the transcript parser deadline between kickoff and sprint review?">What changed about the deadline? <span aria-hidden="true">↗</span></button><button type="button" data-question="How do keyword and semantic search complement each other?">Explain hybrid search <span aria-hidden="true">↗</span></button><button type="button" data-question="What is the confirmed public launch date?">Is a launch date confirmed? <span aria-hidden="true">↗</span></button></div>
+
+        <section class="results-layout" aria-label="Answer and source evidence">
+          <div class="answer-panel">
+            <div class="section-heading"><div class="panel-title"><span class="panel-icon"><svg class="icon"><use href="#icon-spark"/></svg></span><h2 id="result-heading">Your insights</h2></div><span id="result-label" class="result-label">Ready when you are</span></div>
+            <div id="answer-content" class="answer-content" aria-live="polite">
+              <div class="empty-answer"><div class="thread-art" aria-hidden="true"><svg viewBox="0 0 130 66"><path class="thread-path" d="M9 45h24c23 0 11-28 34-28h33"/><circle cx="9" cy="45" r="5"/><circle cx="104" cy="17" r="9"/><path d="m100 17 3 3 5-6"/></svg></div><h3>There’s a thread<br>worth following.</h3><p>Ask a question across your sessions.<br>We’ll bring the relevant passages together.</p><div class="empty-steps"><span><b>01</b> Ask</span><i aria-hidden="true">→</i><span><b>02</b> Explore</span><i aria-hidden="true">→</i><span><b>03</b> Understand</span></div></div>
+            </div>
+            <div class="notes-footer"><svg class="icon"><use href="#icon-pages"/></svg><div><strong>Need the bigger picture?</strong><p>Select one session to create notes.</p></div><button type="button" id="notes-button" class="notes-button" disabled>Make notes <span aria-hidden="true">↗</span></button></div>
           </div>
-        </form>
-      </section>
+          <aside id="sources-panel" class="sources-panel" aria-label="Source passages">
+            <div class="section-heading"><div class="panel-title"><span class="panel-icon"><svg class="icon"><use href="#icon-lines"/></svg></span><h2>Source evidence</h2></div><span id="source-count" class="count">0</span></div>
+            <p class="sources-help">Original words. Original context.</p>
+            <div id="sources"><div class="sources-empty"><div class="transcript-art" aria-hidden="true"><span></span><span></span><span></span><span></span><b>“</b></div><h3>It all comes back to this.</h3><p>Relevant transcript passages will appear here, with speakers and supplied timestamps.</p></div></div>
+            <p class="audio-boundary"><span aria-hidden="true">◷</span> Text transcripts only. Audio is not attached.</p>
+          </aside>
+        </section>
 
-      <div class="suggestions" aria-label="Example questions"><span>Try asking</span><button type="button" data-question="What changed about the transcript parser deadline between kickoff and sprint review?">What changed about the deadline?</button><button type="button" data-question="How do keyword and semantic search complement each other?">Explain hybrid search</button><button type="button" data-question="What is the confirmed public launch date?">Is a launch date confirmed?</button></div>
+        <details id="trace" class="trace"><summary><span>Request details</span><span class="trace-hint">Sources, models &amp; timing</span><svg class="icon"><use href="#icon-chevron"/></svg></summary><div id="trace-content">Run a search to inspect its details.</div></details>
 
-      <section class="results-layout" aria-label="Answer and source evidence">
-        <div class="answer-panel">
-          <div class="section-heading"><h2 id="result-heading">A little less searching.</h2><span id="result-label" class="result-label">A little more context.</span></div>
-          <div id="answer-content" class="answer-content" aria-live="polite"><div class="empty-answer"><span class="quotation-mark" aria-hidden="true">“</span><h3>Good notes start with listening.</h3><p>Ask across your sessions, or select one from the library to turn it into lecture notes or meeting minutes.</p><div class="sample-note"><span class="note-line"></span><span class="note-line short"></span><span class="sample-citation">Every answer has somewhere to return to.</span></div></div></div>
-          <button type="button" id="notes-button" class="notes-button" disabled>Make notes for selected session <span aria-hidden="true">↗</span></button>
-        </div>
-        <aside class="sources-panel" aria-label="Source passages"><div class="section-heading"><h2>From the transcript</h2><span id="source-count" class="count">0</span></div><p class="sources-help">Original passages. Timestamps locate the supplied transcript; audio is not attached.</p><div id="sources"><div class="sources-empty"><span class="source-glyph" aria-hidden="true">[00:00]</span><p>Your evidence will appear here.</p></div></div></aside>
-      </section>
+        <details id="how-it-works" class="how-it-works"><summary><svg class="icon"><use href="#icon-shield"/></svg><span>How your workspace works</span><span class="trace-hint">Source integrity &amp; data privacy</span><svg class="icon"><use href="#icon-chevron"/></svg></summary><div class="how-content"><div class="pipeline-map"><div><span>01 / PRESERVE</span><h3>Keep the context</h3><p>Speaker turns and supplied timestamps stay attached to each passage.</p></div><div><span>02 / RETRIEVE</span><h3>Find the relevant words</h3><p>Keyword, semantic, or hybrid search selects the context for a question.</p></div><div><span>03 / REVIEW</span><h3>Follow the evidence</h3><p>AI can draft a response. Source IDs and exact quotes are checked; claim accuracy still needs review.</p></div></div><p class="boundary-note">Notes use the selected transcript directly. A valid quote does not prove that a generated claim is supported. No audio recording or transcription is available in this reference workspace.</p><p class="boundary-note">Cloud data flow: indexing sends transcript passages to Gemini. Semantic search sends your question; AI answers send the question and selected passages. Notes send the selected transcript. Use synthetic or authorized material.</p><div id="model-setup" class="model-setup"><h3>Model setup</h3><p>To use the optional Gemini integration, set <code>GEMINI_API_KEY</code> in your local <code>.env</code> and restart. Then build the semantic index for semantic or hybrid search. A configured key does not confirm provider access or answer quality.</p></div></div></details>
 
-      <details id="trace" class="trace"><summary>Inspect this request <span>retrieval, models & timing</span></summary><div id="trace-content">Run a search to inspect its pipeline.</div></details>
-      <section id="how-it-works" class="how-it-works"><p class="eyebrow">A CLEAR PATH FROM SOURCE TO ANSWER</p><div class="pipeline-map"><div><span>01</span><h3>Read & preserve</h3><p>Speaker turns and timestamps stay attached to each passage.</p></div><div><span>02</span><h3>Retrieve what matters</h3><p>Keyword, semantic, or hybrid search selects the context.</p></div><div><span>03</span><h3>Answer with evidence</h3><p>AI drafts a response. Source IDs and exact quotes are checked.</p></div></div><p class="boundary-note">A valid quote does not prove that a claim is correct. Review the cited passages. Notes use the selected transcript directly; questions use retrieval.</p><p class="boundary-note data-flow">AI data flow: building the index sends transcript passages to Gemini. Semantic search sends your question; AI answers send the question and selected passages. Notes send the selected transcript. Use fictional or authorized material.</p></section>
-      <footer class="workspace-footer"><span>Made for understanding, one conversation at a time.</span><span>Local, single-user demo · no audio transcription</span></footer>
+        <footer class="workspace-footer"><span>Find clarity. Keep the context.</span><span>TranscriptLens <span aria-hidden="true">/</span> Text reference workspace</span></footer>
+      </div>
     </main>
   </div>
 </body>

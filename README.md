@@ -109,6 +109,7 @@ See [verification results and limitations](docs/VERIFICATION.md). The current im
 - [Architecture review and repository evidence](docs/ARCHITECTURE_REVIEW.md)
 - [Architecture](docs/ARCHITECTURE.md)
 - [Component data and lifecycle contracts](docs/CONTRACTS.md)
+- [Frontend direction and stack recommendation](docs/FRONTEND.md)
 - [Component roadmap](docs/BUILD_PLAN.md)
 - [Reference implementation](docs/PROTOTYPE.md)
 - [Verification](docs/VERIFICATION.md)

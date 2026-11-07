@@ -48,3 +48,12 @@ Mocked responses test provider contracts and orchestration only. `evaluate.py --
 - `python -m unittest discover -v`: all 24 existing tests passed.
 - `python evaluate.py --output .local/architecture-review-bm25.json`: reproduced recall 0.9306, precision 0.4306, MRR 0.9583 and hit rate 1.0000. The rerun report is an ignored local artifact; the tracked baseline is unchanged.
 - No live provider calls, model downloads, audio processing, UI layout checks or Google Meet integration were run in this review. Proposed architecture/contracts/ADR/roadmap describe future acceptance gates, not new verified features.
+
+## Reference-interface refresh: 2026-11-07
+
+- `manage.py check`, JavaScript syntax checking, and all 24 existing tests passed.
+- Headless Chrome checks at 320, 375, 414, 768, 1024 and 1440 pixels found no horizontal page overflow; the primary search target remained 46 pixels tall. Desktop/mobile screenshots were visually inspected.
+- Browser checks exercised session filtering/selection, mobile library expansion/collapse, sample questions, actual offline keyword retrieval, model-setup disclosure, and disabled AI controls without a key. No JavaScript page errors were observed.
+- Synthetic route fixtures exercised generation/notes/action rendering, citation navigation, loading/error recovery and literal rendering of HTML-like text. These checks did not call or validate a live model.
+- Preview data came from a separate synthetic-only database. Public screenshots contain synthetic corpus data only. Browser tools, preview databases and intermediate screenshots remain in ignored local storage.
+- Live model quality, native audio capture/playback, ASR/diarization and meeting participation remain outside this interface verification.

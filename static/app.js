@@ -2,7 +2,7 @@
 (() => {
   'use strict';
   const $ = (id) => document.getElementById(id);
-  let state = { documents: [], selected: '', configured: false, busy: false };
+  let state = { documents: [], selected: '', configured: false, busy: false, filter: '' };
   const desktop = matchMedia('(min-width: 1024px)');
   $('library-panel').open = desktop.matches;
   desktop.addEventListener('change', event => { $('library-panel').open = event.matches; });
@@ -12,6 +12,13 @@
     if (className) el.className = className;
     return el;
   };
+  const icon = (name) => {
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('class', 'icon'); svg.setAttribute('aria-hidden', 'true');
+    const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+    use.setAttribute('href', `#icon-${name}`); svg.append(use);
+    return svg;
+  };
   function message(text, error = false) {
     $('notice').hidden = true;
     $('error').hidden = true;
@@ -19,13 +26,14 @@
   }
   function controls() {
     const generate = $('generate').checked;
-    $('search-button').textContent = state.busy ? 'Working…' : generate ? 'Generate cited answer ↗' : 'Find source passages ↗';
+    $('search-button-label').textContent = state.busy ? 'Working…' : generate ? 'Generate answer' : 'Find passages';
+    $('question-form').setAttribute('aria-busy', String(state.busy));
     $('search-button').disabled = state.busy;
     $('notes-button').disabled = state.busy || !state.selected || !state.configured;
     $('generate').disabled = !state.configured || state.busy;
     $('transcript-file').disabled = state.busy;
     if ($('index-button')) $('index-button').disabled = state.busy;
-    for (const id of ['mode', 'top-k', 'question']) $(id).disabled = state.busy;
+    for (const id of ['mode', 'top-k', 'question', 'library-search']) $(id).disabled = state.busy;
     document.querySelectorAll('.document, [data-question]').forEach(el => { el.disabled = state.busy; });
     const doc = state.documents.find(d => d.id === state.selected);
     $('scope-label').textContent = doc ? doc.title : 'Across all sessions';
@@ -53,12 +61,14 @@
     function entry(title, id, doc) {
       const button = node('button', undefined, `document${id === state.selected ? ' selected' : ''}${id ? '' : ' all-sessions'}`);
       button.type = 'button'; button.setAttribute('aria-pressed', String(id === state.selected));
-      button.append(node('strong', title));
+      const glyph = node('span', undefined, 'document-icon'); glyph.append(icon(doc ? 'lines' : 'pages'));
+      const copy = node('span', undefined, 'doc-copy'); copy.append(node('strong', title));
       if (doc) {
         const meta = node('span', undefined, 'doc-meta');
-        meta.append(node('span', undefined, `kind-dot ${doc.kind}`), node('span', `${doc.kind} · ${doc.session_date || 'Undated'} · ${doc.chunks} passages`));
-        button.append(meta);
+        meta.append(node('span', `${doc.kind === 'lecture' ? 'Lecture' : 'Meeting'} · ${doc.session_date || 'Undated'}`), node('span', `${doc.chunks} ${doc.chunks === 1 ? 'passage' : 'passages'}`));
+        copy.append(meta);
       }
+      button.append(glyph, copy);
       button.addEventListener('click', () => {
         if (state.busy) return;
         state.selected = id; renderLibrary(); controls();
@@ -68,7 +78,9 @@
       list.append(button);
     }
     entry('All sessions', '');
-    state.documents.forEach(d => entry(d.title, d.id, d));
+    const filtered = state.documents.filter(d => d.title.toLocaleLowerCase().includes(state.filter));
+    filtered.forEach(d => entry(d.title, d.id, d));
+    $('library-empty').hidden = filtered.length > 0 || !state.filter;
     $('document-count').textContent = state.documents.length;
   }
   async function refresh() {
@@ -79,7 +91,7 @@
     $('setup-banner').hidden = data.configured;
     const total = data.documents.reduce((n, d) => n + d.chunks, 0);
     const indexed = data.documents.reduce((n, d) => n + (d.embedded || 0), 0);
-    $('connection').textContent = data.configured ? `AI key configured · ${indexed}/${total} indexed` : 'Search-only · AI not connected';
+    $('connection').textContent = data.configured ? `AI key configured · ${indexed}/${total} indexed` : 'Keyword search ready';
     $('connection').classList.toggle('offline', !data.configured);
     if (!$('index-button') && data.configured) {
       const button = node('button', 'Build semantic index', 'notes-button'); button.id = 'index-button'; button.type = 'button';
@@ -103,7 +115,9 @@
       const article = node('article', undefined, 'source'); article.id = `source-${index + 1}`;
       const heading = node('div', undefined, 'source-heading');
       heading.append(node('span', String(index + 1).padStart(2, '0'), 'source-number'), node('h3', source.title));
-      article.append(heading, node('p', `${source.timestamp} · ${source.session_date || 'Undated'} · ${source.speakers.join(', ') || 'Speaker not stated'}`, 'source-meta'));
+      const meta = node('p', undefined, 'source-meta');
+      meta.append(node('span', source.timestamp, 'source-time'), node('span', `${source.session_date || 'Undated'} · ${source.speakers.join(', ') || 'Speaker not stated'}`));
+      article.append(heading, meta);
       const details = node('details'); details.open = sources.length <= 4 || index === 0;
       details.append(node('summary', `Read source · turns ${source.first_turn}–${source.last_turn}`), node('pre', source.content));
       article.append(details); target.append(article);
@@ -157,6 +171,16 @@
     renderSources(result.sources); renderTrace(result);
   }
   $('generate').addEventListener('change', controls);
+  $('library-search').addEventListener('input', event => {
+    state.filter = event.target.value.trim().toLocaleLowerCase(); renderLibrary(); controls();
+  });
+  document.querySelectorAll('a[href="#how-it-works"], a[href="#model-setup"]').forEach(link => {
+    link.addEventListener('click', () => { $('how-it-works').open = true; });
+  });
+  document.querySelectorAll('.view-nav a').forEach(link => link.addEventListener('click', () => {
+    document.querySelectorAll('.view-nav a').forEach(item => { item.classList.remove('active'); item.removeAttribute('aria-current'); });
+    link.classList.add('active'); link.setAttribute('aria-current', 'location');
+  }));
   $('question-form').addEventListener('submit', event => {
     event.preventDefault(); operation(async () => {
       const result = await request('/api/ask', { question: $('question').value.trim(), mode: $('mode').value,
